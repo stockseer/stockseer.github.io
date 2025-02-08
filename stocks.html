@@ -62,7 +62,7 @@
 </head>
 <body>
 <div class="container">
-    <h1 id="title">CHINA Stocks</h1>
+    <h1 id="title"></h1>
     <div id="loading" class="loading">Loading...</div>
     <div id="error" class="error"></div>
     <div id="tableContainer"></div>
@@ -141,7 +141,7 @@
     // Load the CSV file automatically when the page loads
     const urlParams = new URLSearchParams(window.location.search);
     const file_name = urlParams.get('name') || 'usa';
-    document.getElementById("title").innerHTML = file_name.toUpperCase() + ' Stocks'
+    document.getElementById("title").innerHTML = file_name.toUpperCase()
 
     window.addEventListener('load', function() {
         const loading = document.getElementById('loading');
