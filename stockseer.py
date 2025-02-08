@@ -115,7 +115,7 @@ class History:
         self.folder = folder
         self.indicators = Indicators()
 
-    def download_stock_data(self, stock_symbols, period='2y'):
+    def download_stock_data(self, stock_symbols, period='1y'):
         tickers = ' '.join(stock_symbols)
         df = yf.download(tickers=tickers, period=period, interval='1d').dropna(how='all')
 
@@ -153,7 +153,7 @@ class History:
                 data = pd.read_csv(file_path, index_col=0, parse_dates=True)
                 data['SMA_20'] = self.indicators.calculate_sma(data, window=20)
                 data['SMA_50'] = self.indicators.calculate_sma(data, window=50)
-                data['SMA_250'] = self.indicators.calculate_sma(data, window=250)
+                data['SMA_200'] = self.indicators.calculate_sma(data, window=200)
                 data['RSI_7'] = self.indicators.calculate_rsi(data, window=7)
                 data['RSI_14'] = self.indicators.calculate_rsi(data, window=14)
                 data['RSI_21'] = self.indicators.calculate_rsi(data, window=21)
