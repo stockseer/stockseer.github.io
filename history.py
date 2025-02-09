@@ -54,7 +54,6 @@ class History:
                 data['RSI_7'] = self.indicators.calculate_rsi(data, window=7)
                 data['RSI_14'] = self.indicators.calculate_rsi(data, window=14)
                 data['RSI_21'] = self.indicators.calculate_rsi(data, window=21)
-                data['RSI_C'] = data['RSI_7'] / data['Adj Close']
                 data['MACD'], data['Signal'] = self.indicators.calculate_macd(data)
                 data['BB'], data['BBU'], data['BBL'], data['BBP'] = self.indicators.calculate_bollinger_bands(data)
                 all_stocks[symbol] = data
@@ -69,10 +68,8 @@ class History:
 
     @staticmethod
     def can_sell(data):
-        margin = data['BBU'] - data['BBL']
-        return data['RSI_7'] >= 80 and data['Adj Close'] >= (data['BBU'] - margin)
+        return data['RSI_7'] >= 80 and data['BBP'] >= 1
 
     @staticmethod
     def can_buy(data):
-        margin = data['BBU'] - data['BBL']
-        return data['RSI_7'] <= 20 and data['Adj Close'] <= (data['BBL'] + margin)
+        return data['RSI_7'] <= 20 and data['BBP'] <= 0
