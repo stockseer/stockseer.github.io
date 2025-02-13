@@ -4,10 +4,11 @@ from strategy import Strategy
 
 
 def save_to_csv(sell, buy, file_name):
-    if len(sell) > len(buy):
-        buy += [None] * (len(sell) - len(buy))
-    if len(sell) < len(buy):
-        sell += [None] * (len(buy) - len(sell))
+    count = max(len(sell), len(buy))
+
+    sell += [None] * (count - len(sell))
+    buy += [None] * (count - len(buy))
+
     df = pd.DataFrame({
         'SELL': sell,
         'BUY': buy
@@ -20,9 +21,11 @@ strategy.download_usa_stocks()
 strategy.download_china_stocks()
 strategy.download_portfolio_stocks()
 
-_, sell_usa, buy_usa = strategy.load_usa_stocks()
-save_to_csv(list(sell_usa.keys()), list(buy_usa.keys()), "usa_stocks.csv")
-_, sell_china, buy_china = strategy.load_china_stocks()
-save_to_csv(list(sell_china.keys()), list(buy_china.keys()), "china_stocks.csv")
-_, sell_portfolio, buy_portfolio = strategy.load_portfolio_stocks()
-save_to_csv(list(sell_portfolio.keys()), list(buy_portfolio.keys()), "portfolio_stocks.csv")
+_, s_usa, b_usa = strategy.load_usa_stocks()
+save_to_csv(list(s_usa.keys()), list(b_usa.keys()), "usa_stocks.csv")
+
+_, s_china, b_china = strategy.load_china_stocks()
+save_to_csv(list(s_china.keys()), list(b_china.keys()), "china_stocks.csv")
+
+_, s_portfolio, b_portfolio = strategy.load_portfolio_stocks()
+save_to_csv(list(s_portfolio.keys()), list(b_portfolio.keys()), "portfolio_stocks.csv")

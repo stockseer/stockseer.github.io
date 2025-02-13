@@ -58,18 +58,18 @@ class History:
                 data['BB'], data['BBU'], data['BBL'], data['BBP'] = self.indicators.calculate_bollinger_bands(data)
                 all_stocks[symbol] = data
 
-                if self.can_sell(data.iloc[-1]):
+                if self.can_sell(data.iloc[-1], 75, 1):
                     sell_stocks[symbol] = data
-                if self.can_buy(data.iloc[-1]):
+                if self.can_buy(data.iloc[-1], 25, 0):
                     buy_stocks[symbol] = data
             except Exception as e:
                 print(f"Failed to load data for {symbol}: {e}")
         return all_stocks, sell_stocks, buy_stocks
 
     @staticmethod
-    def can_sell(data):
-        return data['RSI_7'] >= 80 and data['BBP'] >= 1
+    def can_sell(data, rsi, bbp):
+        return data['RSI_7'] >= rsi and data['BBP'] >= bbp
 
     @staticmethod
-    def can_buy(data):
-        return data['RSI_7'] <= 20 and data['BBP'] <= 0
+    def can_buy(data, rsi, bbp):
+        return data['RSI_7'] <= rsi and data['BBP'] <= bbp
