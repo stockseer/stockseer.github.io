@@ -5,10 +5,11 @@ from screener import Screener
 class Strategy:
 
     def __init__(self):
-        self.y_usa_stocks = "stock_data/symbols/y_usa_stocks.csv"
-        self.tv_usa_stocks = "stock_data/symbols/tv_usa_stocks.csv"
-        self.tv_china_stocks = "stock_data/symbols/tv_china_stocks.csv"
-        self.portfolio_stocks = "stock_data/symbols/portfolio_stocks.csv"
+        self.y_usa_stocks = 'stock_data/symbols/y_usa_stocks.csv'
+        self.tv_usa_stocks = 'stock_data/symbols/tv_usa_stocks.csv'
+        self.tv_china_stocks = 'stock_data/symbols/tv_china_stocks.csv'
+        self.em_china_stocks = 'stock_data/symbols/em_china_stocks.csv'
+        self.portfolio_stocks = 'stock_data/symbols/portfolio_stocks.csv'
         self.screener = Screener()
         self.history = History()
 
@@ -33,6 +34,7 @@ class Strategy:
 
     def download_china_stocks(self):
         self.screener.scrape_tradingview_most_active_china_stocks(self.tv_china_stocks)
+        self.screener.scrape_eastmoney_most_active_china_stocks(self.em_china_stocks)
 
         symbols = self.load_china_symbols()
         if symbols:
@@ -40,10 +42,11 @@ class Strategy:
 
     def load_china_symbols(self):
         symbols = self.screener.read_symbols_from_csv(self.tv_china_stocks)
+        symbols += self.screener.read_symbols_from_csv(self.em_china_stocks)
         return [
-            s + ".SS" if s.startswith("6") else
-            s + ".SZ" if s.startswith(("0", "3")) else
-            s
+            s + '.SS' if s.startswith('6') else
+            s + '.SZ' if s.startswith(('0', '3')) else
+            ''
             for s in symbols
         ]
 

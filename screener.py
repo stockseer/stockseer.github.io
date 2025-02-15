@@ -23,32 +23,38 @@ class Screener:
                 df = pd.DataFrame(symbol_list, columns=[self.column])
                 df.to_csv(file_name, index=False)
         except Exception as e:
-            print(f"Error scraping data: {e}")
+            print(f'Error scraping data: {e}')
 
     def scrape_yahoo_most_active_usa_stocks(self, file_name):
-        url = "https://finance.yahoo.com/markets/stocks/most-active/?start=0&count=100"
+        url = 'https://finance.yahoo.com/markets/stocks/most-active/?start=0&count=100'
         element = 'span'
         attributes = {'class': 'symbol yf-1m808gl'}
         return self.scrape_most_active_stocks(url, element, attributes, file_name)
 
     def scrape_tradingview_most_active_usa_stocks(self, file_name):
-        url = "https://www.tradingview.com/markets/stocks-usa/market-movers-active/"
+        url = 'https://www.tradingview.com/markets/stocks-usa/market-movers-active/'
         element = 'a'
         attributes = {'class': 'tickerNameBox-GrtoTeat'}
         return self.scrape_most_active_stocks(url, element, attributes, file_name)
 
     def scrape_tradingview_most_active_china_stocks(self, file_name):
-        url = "https://www.tradingview.com/markets/stocks-china/market-movers-active/"
+        url = 'https://www.tradingview.com/markets/stocks-china/market-movers-active/'
         element = 'a'
         attributes = {'class': 'tickerNameBox-GrtoTeat'}
+        return self.scrape_most_active_stocks(url, element, attributes, file_name)
+
+    def scrape_eastmoney_most_active_china_stocks(self, file_name):
+        url = 'http://www.estock.club/EMHot100.aspx'
+        element = 'div'
+        attributes = {'class': 'scode'}
         return self.scrape_most_active_stocks(url, element, attributes, file_name)
 
     def read_symbols_from_csv(self, file_name):
         try:
             df = pd.read_csv(file_name, dtype=str)
             if self.column not in df.columns:
-                raise ValueError(f"Column '{self.column}' not found in the CSV file.")
+                raise ValueError(f'Column "{self.column}" not found in the CSV file.')
             return df[self.column].tolist()
         except Exception as e:
-            print(f"Error reading CSV: {e}")
+            print(f'error reading CSV: {e}')
             return []
