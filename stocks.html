@@ -86,28 +86,31 @@
     function parseCSV(csv) {
         const lines = csv.split('\n');
         const result = [];
-        const headers = ['SELL', 'BUY'];
+        const headers = lines[0].split(',').map(header => header.trim());
 
         for (let i = 1; i < lines.length; i++) {
             if (!lines[i].trim()) continue;
 
             const obj = {};
             const currentLine = lines[i].split(',');
-            obj[headers[0]] = currentLine[0].trim();
-            obj[headers[1]] = currentLine[3].trim();
+
+            for (let j = 0; j < headers.length; j++) {
+                obj[headers[j]] = currentLine[j].trim();
+            }
             result.push(obj);
         }
         return { headers, data: result };
     }
 
     function createTable({ headers, data }) {
+        const columns = ['SELL', 'BUY'];
         const tableContainer = document.getElementById('tableContainer');
         const table = document.createElement('table');
 
         // Create header row
         const thead = document.createElement('thead');
         const headerRow = document.createElement('tr');
-        headers.forEach(header => {
+        columns.forEach(header => {
             const th = document.createElement('th');
             th.textContent = header;
             headerRow.appendChild(th);
@@ -119,12 +122,17 @@
         const tbody = document.createElement('tbody');
         data.forEach(row => {
             const tr = document.createElement('tr');
-            headers.forEach(header => {
+            columns.forEach(header => {
                 const td = document.createElement('td');
                 const link = document.createElement('a');
                 link.href = 'https://finance.yahoo.com/quote/' + row[header] + '/';
                 link.textContent = row[header];
+                const span = document.createElement('span');
+                span.textContent = ' (' + row[header + ' RSI'] + ', ' + row[header + ' BBP'] + ')';
                 td.appendChild(link);
+                if (link.textContent != '') {
+                    td.appendChild(span);
+                }
                 tr.appendChild(td);
             });
             tbody.appendChild(tr);
