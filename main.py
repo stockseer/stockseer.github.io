@@ -13,11 +13,11 @@ def save_to_csv(sell, buy, file_name):
 
     df = pd.DataFrame({
         'SELL': sell_keys,
-        'SELL RSI': [round(sell[k]['RSI_7'].iloc[-1], 2) if k else None for k in sell_keys],
-        'SELL BBP': [round(sell[k]['BBP'].iloc[-1], 2) if k else None for k in sell_keys],
+        'SELL_RSI': [round(sell[k]['RSI'].iloc[-1], 2) if k else None for k in sell_keys],
+        'SELL_BBP': [round(sell[k]['BBP'].iloc[-1], 2) if k else None for k in sell_keys],
         'BUY': buy_keys,
-        'BUY RSI': [round(buy[k]['RSI_7'].iloc[-1], 2) if k else None for k in buy_keys],
-        'BUY BBP': [round(buy[k]['BBP'].iloc[-1], 2) if k else None for k in buy_keys]
+        'BUY_RSI': [round(buy[k]['RSI'].iloc[-1], 2) if k else None for k in buy_keys],
+        'BUY_BBP': [round(buy[k]['BBP'].iloc[-1], 2) if k else None for k in buy_keys]
     })
     df.to_csv(file_name, index=False)
 

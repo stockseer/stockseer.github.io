@@ -48,13 +48,8 @@ class History:
             file_path = f'{self.folder}/{symbol}.csv'
             try:
                 data = pd.read_csv(file_path, index_col=0, parse_dates=True)
-                data['SMA_5'] = self.indicators.calculate_sma(data, window=5)
-                data['SMA_20'] = self.indicators.calculate_sma(data, window=20)
-                data['RSI_7'] = self.indicators.calculate_rsi(data, window=7)
-                data['RSI_14'] = self.indicators.calculate_rsi(data, window=14)
-                data['RSI_21'] = self.indicators.calculate_rsi(data, window=21)
-                data['MACD'], data['Signal'] = self.indicators.calculate_macd(data)
-                data['BB'], data['BBU'], data['BBL'], data['BBP'] = self.indicators.calculate_bollinger_bands(data)
+                data['RSI'] = self.indicators.calculate_rsi(data, window=6)
+                _, _, _, data['BBP'] = self.indicators.calculate_bollinger_bands(data, window=20)
                 all_stocks[symbol] = data
 
                 if self.can_sell(data.iloc[-1], 70, 0.9):
@@ -64,16 +59,16 @@ class History:
             except Exception as e:
                 print(f'Failed to load data for {symbol}: {e}')
 
-        sell_stocks_keys = sorted(sell_stocks, key=lambda x: sell_stocks[x].iloc[-1]['RSI_7'], reverse=True)
+        sell_stocks_keys = sorted(sell_stocks, key=lambda x: sell_stocks[x].iloc[-1]['RSI'], reverse=True)
         sell_stocks = {k: sell_stocks[k] for k in sell_stocks_keys}
-        buy_stocks_keys = sorted(buy_stocks, key=lambda x: buy_stocks[x].iloc[-1]['RSI_7'])
+        buy_stocks_keys = sorted(buy_stocks, key=lambda x: buy_stocks[x].iloc[-1]['RSI'])
         buy_stocks = {k: buy_stocks[k] for k in buy_stocks_keys}
         return all_stocks, sell_stocks, buy_stocks
 
     @staticmethod
     def can_sell(data, rsi, bbp):
-        return data['RSI_7'] >= rsi and data['BBP'] >= bbp
+        return data['RSI'] >= rsi and data['BBP'] >= bbp
 
     @staticmethod
     def can_buy(data, rsi, bbp):
-        return data['RSI_7'] <= rsi and data['BBP'] <= bbp
+        return data['RSI'] <= rsi and data['BBP'] <= bbp

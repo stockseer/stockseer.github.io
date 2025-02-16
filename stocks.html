@@ -128,7 +128,7 @@
                 link.href = 'https://finance.yahoo.com/quote/' + row[header] + '/';
                 link.textContent = row[header];
                 const span = document.createElement('span');
-                span.textContent = ' (' + row[header + ' RSI'] + ', ' + row[header + ' BBP'] + ')';
+                span.textContent = ' (' + row[header + '_RSI'] + ', ' + row[header + '_BBP'] + ')';
                 td.appendChild(link);
                 if (link.textContent != '') {
                     td.appendChild(span);
