@@ -3,7 +3,7 @@ import numpy as np
 
 class Indicator:
 
-    def __init__(self, column='Adj Close'):
+    def __init__(self, column='Close'):
         self.column = column
 
     def calculate_sma(self, data, window=5):

@@ -19,14 +19,13 @@ class History:
         all_data = {}
         os.makedirs(self.folder, exist_ok=True)
 
-        for symbol in df['Adj Close'].columns.tolist():
+        for symbol in df['Close'].columns.tolist():
             data = pd.concat([df['Open'][symbol],
                               df['High'][symbol],
                               df['Low'][symbol],
                               df['Close'][symbol],
-                              df['Adj Close'][symbol],
                               df['Volume'][symbol]], axis=1, sort=True).dropna()
-            data.columns = ['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
+            data.columns = ['Open', 'High', 'Low', 'Close', 'Volume']
             if not data.empty:
                 all_data[symbol] = data
                 file_path = f'{self.folder}/{symbol}.csv'
